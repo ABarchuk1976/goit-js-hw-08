@@ -1,18 +1,33 @@
 import { default as Player } from '../../node_modules/@vimeo/player/src/player.js';
-import { saveLocal, getLocal } from './local-storage.js';
-
-console.log(Player);
 
 const iframe = document.querySelector('#vimeo-player');
 const player = new Player(iframe);
-let seconds = console.log(player);
+const key = 'seconds';
+
 player.on('pause', () => {
-  const strLocal = player.getCurrentTime();
-  saveLocal();
+  player.getCurrentTime().then(result => {
+    try {
+      localStorage.setItem(key, String(result));
+    } catch (error) {
+      console.error('Помилка збереження даних: ', error.message);
+    }
+  });
+
+  const aValue = localStorage.getItem(key);
+  console.log('In localStorage: ', Number(aValue));
 });
 
 player.on('play', () => {
+  let aValue = 0;
   try {
-    const strLocal = getLocal(player.getCurrentTime());
-  } catch {}
+    const res = localStorage.getItem(key);
+    console.log(res);
+    if (res !== null) aValue = Number(res);
+  } catch (error) {
+    console.error('Помилка завантаження даних: ', error.message);
+  }
+
+  player.setCurrentTime(aValue).then(result => {
+    result = aValue;
+  });
 });

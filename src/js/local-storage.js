@@ -1,17 +1,16 @@
-export const saveLocal = (key, value) => {
+export function saveLocal(key, value) {
   try {
-    const strLocal = JSON.stringify(value);
-    localStorage.setItem(key, strLocal);
+    localStorage.setItem(key, value);
   } catch (error) {
     console.error('Помилка збереження даних: ', error.message);
   }
-};
+}
 
-export const getLocal = key => {
+export function getLocal(key) {
   try {
-    const strLocal = localStorage.getItem(key);
-    return strLocal === null ? undefined : JSON.parse(strLocal);
+    const aValue = localStorage.getItem(key);
+    return Number(aValue);
   } catch (error) {
     console.error('Помилка завантаження даних: ', error.message);
   }
-};
+}
