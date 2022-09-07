@@ -2,7 +2,7 @@
 import { galleryItems } from './gallery-items.js';
 import { default as SimpleLightbox } from '../../node_modules/simplelightbox/src/simple-lightbox.js';
 // Change code below this line
-// const SimpleLightbox = require('simple-lightbox');
+
 const galleryRef = document.querySelector('.gallery');
 let markup = '';
 
@@ -25,8 +25,6 @@ const paramsLightbox = {
 const lightbox = new SimpleLightbox('.gallery a', paramsLightbox);
 
 console.log(lightbox.defaultOptions);
-
-lightbox.close();
 
 galleryRef.addEventListener('click', event => {
   if (event.target.tagName !== 'IMG') return;
