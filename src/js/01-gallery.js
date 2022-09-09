@@ -26,8 +26,6 @@ const lightbox = new SimpleLightbox('.gallery a', paramsLightbox);
 
 galleryRef.addEventListener('click', event => {
   if (event.target.tagName !== 'IMG') return;
-
-  lightbox.show;
-
   event.preventDefault();
+  lightbox.show;
 });
