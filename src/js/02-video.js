@@ -1,11 +1,10 @@
-import { throttle } from 'lodash';
 const _ = require('../../node_modules/lodash/lodash.js');
-import Player from '../../node_modules/@vimeo/player/src/player.js';
 import { throttle } from '../../node_modules/lodash/throttle.js';
+import Player from '../../node_modules/@vimeo/player/src/player.js';
 
 const iframe = document.querySelector('#vimeo-player');
-
 const player = new Player(iframe);
+
 const key = 'videoplayer-current-time';
 let currentTime = 0;
 
@@ -32,7 +31,6 @@ player.on('timeupdate', throttled);
 player.on('play', () => {
   try {
     currentTime = localStorage.getItem(key);
-    console.log('Play from: ', currentTime);
     player.setCurrentTime(Number(currentTime));
   } catch (error) {
     console.error('Помилка завантаження даних: ', error.message);
