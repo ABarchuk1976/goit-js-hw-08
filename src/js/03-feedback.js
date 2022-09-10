@@ -54,7 +54,6 @@ messageRef[0].addEventListener('input', event => {
 
 formRef.addEventListener('submit', event => {
   try {
-    console.log(event);
     event.preventDefault();
     let keyValue = parseFormState();
     formState.email = keyValue.email;
@@ -62,8 +61,9 @@ formRef.addEventListener('submit', event => {
     console.log(
       `Об'єкт: з полями і значеннями email: ${formState.email} та message: ${formState.message}.} `
     );
-    localStorage.clear();
-    window.location.reload();
+    localStorage.removeItem(key);
+    emailRef[0].value = parseFormState().email;
+    messageRef[0].value = parseFormState().message;
   } catch (error) {
     console.error('Помилка: ', error.message);
   }
