@@ -1,4 +1,4 @@
-const _ = require('../../node_modules/lodash/lodash.js');
+const _ = require('lodash');
 import { throttle } from '../../node_modules/lodash/throttle.js';
 import Player from '../../node_modules/@vimeo/player/src/player.js';
 

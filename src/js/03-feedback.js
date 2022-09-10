@@ -1,83 +1,69 @@
-const _ = require('../../node_modules/lodash/lodash.js');
+const _ = require('lodash');
 import { throttle } from '../../node_modules/lodash/throttle.js';
 
 const emailRef = document.getElementsByName('email');
 const messageRef = document.getElementsByName('message');
-const submitBtnRef = document.getElementsByTagName('button');
-
-console.log(emailRef[0]);
+const formRef = document.querySelector('.feedback-form');
 
 const key = 'feedback-form-state';
-const TROTTLE_VALUE = 500;
-let formState = {
+const THROTTLE_VALUE = 500;
+const formState = {
   email: '',
   message: '',
 };
 
-console.log(formState);
-
-const parseFormState = () => {
+function parseFormState() {
   try {
     const keyJSON = localStorage.getItem(key);
-    const formState = keyJSON
-      ? JSON.parse(keyJSON)
-      : { email: '', message: '' };
 
-    return formState;
+    return keyJSON ? JSON.parse(keyJSON) : { email: '', message: '' };
   } catch (error) {
     console.error('Помилка: ', error.message);
   }
-};
+}
 
 window.addEventListener('load', () => {
-  formState = parseFormState;
-
-  console.log('When load', formState);
-
-  emailRef[0].value = formState.email;
-  messageRef[0].value = formState.message;
+  emailRef[0].value = parseFormState().email;
+  messageRef[0].value = parseFormState().message;
 });
 
-function throttledEmail(event) {
-  _.throttle(() => {
-    const inputedEmail = event.currentTarget.value;
-    try {
-      formState = parseFormState;
-      formState.email = inputedEmail;
-      localStorage.setItem(key, JSON.stringify(formState));
-    } catch (error) {
-      console.error('Помилка: ', error.message);
-    }
-
-    console.log('Changed Email in ', formState);
-  }, TROTTLE_VALUE);
-}
-
-function throttledMessage(event) {
-  _.throttle(() => {
-    const inputedMessage = event.currentTarget.value;
-    try {
-      formState = parseFormState;
-      formState.message = inputedMessage;
-      localStorage.setItem(key, JSON.stringify(formState));
-    } catch (error) {
-      console.error('Помилка: ', error.message);
-    }
-
-    console.log('Changed Message in ', formState);
-  }, TROTTLE_VALUE);
-}
-
-emailRef[0].addEventListener('input', event => throttledEmail(event));
-messageRef[0].addEventListener('input', event => throttledMessage(event));
-
-submitBtnRef[0].addEventListener('submit', () => {
+function setKey() {
   try {
-    formState = parseFormState;
+    localStorage.setItem(key, JSON.stringify(formState));
+    const Data = new Date();
+    const Hour = Data.getHours();
+    const Minutes = Data.getMinutes();
+    const Seconds = Data.getSeconds();
+    console.log(`${Hour}:${Minutes}:${Seconds}`);
+  } catch (error) {
+    console.error('Помилка: ', error.message);
+  }
+}
+
+const throttled = _.throttle(setKey, THROTTLE_VALUE);
+
+emailRef[0].addEventListener('input', event => {
+  formState.email = event.target.value;
+  throttled();
+});
+
+messageRef[0].addEventListener('input', event => {
+  formState.message = event.target.value;
+  throttled();
+});
+
+formRef.addEventListener('submit', event => {
+  try {
+    console.log(event);
+    event.preventDefault();
+    let keyValue = parseFormState();
+    formState.email = keyValue.email;
+    formState.message = keyValue.message;
     console.log(
-      `Об'єкт: полями і значеннями email: ${formState.email} та message: ${formState.message}.} `
+      `Об'єкт: з полями і значеннями email: ${formState.email} та message: ${formState.message}.} `
     );
     localStorage.clear();
+    window.location.reload();
   } catch (error) {
     console.error('Помилка: ', error.message);
   }
