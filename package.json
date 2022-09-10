@@ -24,7 +24,6 @@
     "modern-normalize": "^1.1.0",
     "native-promise-only": "^0.8.1",
     "simplelightbox": "^2.10.3",
-    "validator": "^13.7.0",
     "weakmap-polyfill": "^2.0.4"
   },
   "devDependencies": {

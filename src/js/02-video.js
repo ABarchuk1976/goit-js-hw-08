@@ -6,6 +6,7 @@ const iframe = document.querySelector('#vimeo-player');
 const player = new Player(iframe);
 
 const key = 'videoplayer-current-time';
+const TROTTLE_VALUE = 1000;
 let currentTime = 0;
 
 const throttled = _.throttle(() => {
@@ -24,7 +25,7 @@ const throttled = _.throttle(() => {
   } catch (error) {
     console.error('Помилка збереження даних: ', error.message);
   }
-}, 1000);
+}, TROTTLE_VALUE);
 
 player.on('timeupdate', throttled);
 
