@@ -30,11 +30,14 @@ window.addEventListener('load', () => {
 function setKey() {
   try {
     localStorage.setItem(key, JSON.stringify(formState));
+
+    // Can be deleted
     const Data = new Date();
     const Hour = Data.getHours();
     const Minutes = Data.getMinutes();
     const Seconds = Data.getSeconds();
     console.log(`${Hour}:${Minutes}:${Seconds}`);
+    //
   } catch (error) {
     console.error('Помилка: ', error.message);
   }
@@ -44,24 +47,31 @@ const throttled = _.throttle(setKey, THROTTLE_VALUE);
 
 emailRef[0].addEventListener('input', event => {
   formState.email = event.target.value;
+  formState.message = parseFormState().message;
+
   throttled();
 });
 
 messageRef[0].addEventListener('input', event => {
+  formState.email = parseFormState().email;
   formState.message = event.target.value;
+
   throttled();
 });
 
 formRef.addEventListener('submit', event => {
   try {
     event.preventDefault();
-    let keyValue = parseFormState();
-    formState.email = keyValue.email;
-    formState.message = keyValue.message;
+
+    formState.email = parseFormState().email;
+    formState.message = parseFormState().message;
+
     console.log(
-      `Об'єкт: з полями і значеннями email: ${formState.email} та message: ${formState.message}.} `
+      `Об'єкт: {email: ${formState.email} та message: ${formState.message}}`
     );
+
     localStorage.removeItem(key);
+
     emailRef[0].value = parseFormState().email;
     messageRef[0].value = parseFormState().message;
   } catch (error) {
