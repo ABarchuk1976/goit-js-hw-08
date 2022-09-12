@@ -28,7 +28,7 @@ window.addEventListener('load', () => {
   messageRef[0].value = formState.message;
 });
 
-function setKey() {
+const setKey = () => {
   try {
     localStorage.setItem(key, JSON.stringify(formState));
 
@@ -42,7 +42,7 @@ function setKey() {
   } catch (error) {
     console.error('Помилка: ', error.message);
   }
-}
+};
 
 const throttled = _.throttle(setKey, THROTTLE_VALUE);
 
