@@ -23,8 +23,9 @@ function parseFormState() {
 }
 
 window.addEventListener('load', () => {
-  emailRef[0].value = parseFormState().email;
-  messageRef[0].value = parseFormState().message;
+  formState = parseFormState();
+  emailRef[0].value = formState.email;
+  messageRef[0].value = formState.message;
 });
 
 function setKey() {
@@ -46,14 +47,14 @@ function setKey() {
 const throttled = _.throttle(setKey, THROTTLE_VALUE);
 
 emailRef[0].addEventListener('input', event => {
+  formState = parseFormState();
   formState.email = event.target.value;
-  formState.message = parseFormState().message;
 
   throttled();
 });
 
 messageRef[0].addEventListener('input', event => {
-  formState.email = parseFormState().email;
+  formState = parseFormState();
   formState.message = event.target.value;
 
   throttled();
@@ -63,8 +64,7 @@ formRef.addEventListener('submit', event => {
   try {
     event.preventDefault();
 
-    formState.email = parseFormState().email;
-    formState.message = parseFormState().message;
+    formState = parseFormState();
 
     console.log(
       `Об'єкт: {email: ${formState.email} та message: ${formState.message}}`
