@@ -7,7 +7,7 @@ const formRef = document.querySelector('.feedback-form');
 
 const key = 'feedback-form-state';
 const THROTTLE_VALUE = 500;
-const formState = {
+let formState = {
   email: '',
   message: '',
 };
